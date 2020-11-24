@@ -3,7 +3,7 @@
  * @Author: wei.Yin
  * @Date: 2020-11-23 14:03:06
  * @LastEditors: wei.Yin
- * @LastEditTime: 2020-11-23 19:31:04
+ * @LastEditTime: 2020-11-24 10:40:42
  */
 const path = require('path');
 const CompressionPlugin = require('compression-webpack-plugin');
