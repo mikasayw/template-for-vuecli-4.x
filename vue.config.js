@@ -3,11 +3,11 @@
  * @Author: wei.Yin
  * @Date: 2020-11-23 14:03:06
  * @LastEditors: wei.Yin
- * @LastEditTime: 2020-11-24 10:40:42
+ * @LastEditTime: 2020-11-24 10:58:47
  */
 const path = require('path');
-const CompressionPlugin = require('compression-webpack-plugin');
 const IS_PROD = process.env.NODE_ENV !== 'development';
+const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 	.BundleAnalyzerPlugin;
 const resolve = (dir) => path.join(__dirname, dir); // 给public路径添加别名
@@ -48,6 +48,13 @@ module.exports = {
 	chainWebpack: (config) => {
 		// 添加别名（src默认为@，不用再次添加）
 		// config.resolve.alias.set('@pub', resolve('public')); // 设置public别名为@pub
+		// 小于20k转换base64
+		config.module
+			.rule('images')
+			.use('url-loader')
+			.loader('url-loader')
+			.tap((options) => Object.assign(options, { limit: 20000 }));
+		// 引入包拆分
 		config.optimization.splitChunks({
 			chunks: 'all',
 			minSize: 300000, // 依赖包超过300000bit将被单独打包
