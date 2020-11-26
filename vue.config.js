@@ -3,14 +3,13 @@
  * @Author: wei.Yin
  * @Date: 2020-11-23 14:03:06
  * @LastEditors: wei.Yin
- * @LastEditTime: 2020-11-24 10:58:47
+ * @LastEditTime: 2020-11-26 15:14:00
  */
 const path = require('path');
 const IS_PROD = process.env.NODE_ENV !== 'development';
 const CompressionPlugin = require('compression-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-	.BundleAnalyzerPlugin;
-const resolve = (dir) => path.join(__dirname, dir); // 给public路径添加别名
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const resolve = dir => path.join(__dirname, dir); // 给public路径添加别名
 
 module.exports = {
 	publicPath: './', // base目录，等同于router.js的base字段
@@ -18,7 +17,7 @@ module.exports = {
 	productionSourceMap: false, // 生产环境map文件
 	css: {
 		// 是否使用css分离插件 ExtractTextPlugin
-		extract: true,
+		extract: IS_PROD,
 		sourceMap: false,
 	},
 	devServer: {
@@ -45,7 +44,7 @@ module.exports = {
 		// 	});
 		// },
 	},
-	chainWebpack: (config) => {
+	chainWebpack: config => {
 		// 添加别名（src默认为@，不用再次添加）
 		// config.resolve.alias.set('@pub', resolve('public')); // 设置public别名为@pub
 		// 小于20k转换base64
@@ -53,7 +52,7 @@ module.exports = {
 			.rule('images')
 			.use('url-loader')
 			.loader('url-loader')
-			.tap((options) => Object.assign(options, { limit: 20000 }));
+			.tap(options => Object.assign(options, { limit: 20000 }));
 		// 引入包拆分
 		config.optimization.splitChunks({
 			chunks: 'all',
@@ -81,8 +80,8 @@ module.exports = {
 				},
 			},
 		});
-		config.when(IS_PROD, (config) => {
-			config.optimization.minimizer('terser').tap((args) => {
+		config.when(IS_PROD, config => {
+			config.optimization.minimizer('terser').tap(args => {
 				Object.assign(args[0].terserOptions.compress, {
 					// 生产模式 console.log 去除
 					warnings: false, // 默认 false
@@ -94,7 +93,7 @@ module.exports = {
 			});
 		});
 	},
-	configureWebpack: (config) => {
+	configureWebpack: config => {
 		config.plugins.push(new BundleAnalyzerPlugin());
 		if (IS_PROD) {
 			config.mode = 'production';
