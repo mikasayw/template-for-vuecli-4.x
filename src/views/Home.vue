@@ -57,6 +57,8 @@
 					2019
 				</span>
 			</div>
+			<div class="swiper-button-next" slot="button-next"></div>
+			<div class="swiper-button-prev" slot="button-prev"></div>
 		</swiper>
 
 		<figure class="figure">
@@ -88,9 +90,15 @@
 <script>
 // @ is an alias to /src
 import Vue from 'vue';
-import { Swiper as SwiperClass, Pagination, Mousewheel, Autoplay } from 'swiper/swiper.esm';
+import {
+	Swiper as SwiperClass,
+	Pagination,
+	Navigation,
+	Mousewheel,
+	Autoplay,
+} from 'swiper/swiper.esm';
 import getAwesomeSwiper from 'vue-awesome-swiper/dist/exporter';
-SwiperClass.use([Pagination, Mousewheel, Autoplay]);
+SwiperClass.use([Pagination, Navigation, Mousewheel, Autoplay]);
 Vue.use(getAwesomeSwiper(SwiperClass));
 const { Swiper, SwiperSlide } = getAwesomeSwiper(SwiperClass);
 import 'swiper/swiper-bundle.css';
@@ -115,6 +123,10 @@ export default {
 						}
 					},
 					clickable: true,
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
 				},
 				keyboard: {
 					enabled: true,
